@@ -45,3 +45,8 @@ GET localhost:8089/v1/projects/
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
+###
+# @name GetOneProjectTest
+GET localhost:8089/v1/projects/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json

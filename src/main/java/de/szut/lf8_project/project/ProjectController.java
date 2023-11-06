@@ -52,5 +52,12 @@ public class ProjectController {
         List<ProjectEntity> projects = projectService.getAllProjects();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
-
+    @GetMapping("/{Id}")
+    @Operation(summary = "Get a project by ID")
+    @ApiResponse(responseCode = "200", description = "Project by ID")
+    @ApiResponse(responseCode = "401", description = "Not authorized")
+    public ResponseEntity<ProjectEntity> getProjectById(@PathVariable Long Id) {
+        ProjectEntity project = projectService.getProjectById(Id);
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
 }
