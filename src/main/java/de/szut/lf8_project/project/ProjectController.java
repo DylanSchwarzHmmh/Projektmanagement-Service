@@ -1,8 +1,8 @@
 package de.szut.lf8_project.project;
 
 import de.szut.lf8_project.project.dto.CreateProjectDto;
-
 import de.szut.lf8_project.project.dto.UpdateProjectDto;
+import de.szut.lf8_project.responses.ResponseHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -55,16 +55,16 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/{Id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get a project by ID")
     @ApiResponse(responseCode = "200", description = "Project by ID")
     @ApiResponse(responseCode = "401", description = "Not authorized")
-    public ResponseEntity<ProjectEntity> getProjectById(@PathVariable Long Id) {
-        ProjectEntity project = projectService.getProjectById(Id);
+    public ResponseEntity<ProjectEntity> getProjectById(@PathVariable Long id) {
+        ProjectEntity project = projectService.getProjectById(id);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
-    @PutMapping("/{Id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update a project by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Project updated successfully",
@@ -76,8 +76,23 @@ public class ProjectController {
             @ApiResponse(responseCode = "401", description = "Not authorized",
                     content = @Content)
     })
-    public ResponseEntity<ProjectEntity> updateProjectById(@PathVariable Long Id, @RequestBody @Valid UpdateProjectDto updateProjectDto) {
-        ProjectEntity project = projectService.updateProject(Id, updateProjectDto);
+    public ResponseEntity<ProjectEntity> updateProjectById(@PathVariable Long id, @RequestBody @Valid UpdateProjectDto updateProjectDto) {
+        ProjectEntity project = projectService.updateProject(id, updateProjectDto);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
+
+    @Operation(summary = "Deletes a project by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Project deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "401", description = "Not authorized",
+                    content = @Content)
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteProject(@PathVariable Long id) {
+        projectService.deleteProject(id);
+        return ResponseHandler.generateResponse("Project deleted by id:"+id, HttpStatus.NO_CONTENT,null);
+    }
 }
+
+
