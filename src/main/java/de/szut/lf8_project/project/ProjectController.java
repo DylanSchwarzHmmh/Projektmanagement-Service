@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -37,6 +38,19 @@ public class ProjectController {
     public ResponseEntity<ProjectEntity> createProject(@RequestBody @Valid CreateProjectDto createProjectDto) {
         ProjectEntity createdProject = projectService.createProject(createProjectDto);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Get a list of projects")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of projects",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProjectEntity.class))}),
+            @ApiResponse(responseCode = "401", description = "Not authorized",
+                    content = @Content)})
+    @GetMapping("/")
+    public ResponseEntity<List<ProjectEntity>> getAllProjects() {
+        List<ProjectEntity> projects = projectService.getAllProjects();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
 }
