@@ -1,0 +1,40 @@
+POST http://keycloak.szut.dev/auth/realms/szut/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=employee-management-service&username=user&password=test
+
+### /projects
+# @name Test with valid body data
+
+POST localhost:8089/v1/projects/
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "description": "Hallo ich bin ein Projekt!",
+  "eid": 5,
+  "cid": 4,
+  "customerEmployeeName": "Kevin James",
+  "comment": "Ich bin eine Kommentarziel lelele",
+  "startDate": "2022-12-09T18:19:26.492745400",
+  "estimatedEndDate": "2022-12-09T18:19:26.492745400",
+  "endDate": "2022-12-09T18:19:26.492745400"
+}
+
+###
+# @name Test with invalid body data
+
+POST localhost:8089/v1/projects/
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "description": "Hallo ich bin ein Projekt!",
+  "eid": null,
+  "cid": 4,
+  "customerEmployeeName": null,
+  "comment": "Ich bin eine Kommentarziel lelele",
+  "startDate": "2022-12-09T18:19:26.492745400",
+  "estimatedEndDate": "2022-12-09T18:19:26.492745400",
+  "endDate": "2022-12-09T18:19:26.492745400"
+}
