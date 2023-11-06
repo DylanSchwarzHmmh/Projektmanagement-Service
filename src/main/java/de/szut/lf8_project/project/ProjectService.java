@@ -35,4 +35,11 @@ public class ProjectService {
         ProjectEntity newProject = projectMapper.updateProjectDtoToProjectEntity(updateProjectDto,oldProject);
         return projectRepository.save(newProject);
     }
+
+    public void deleteProject(Long id) {
+        ProjectEntity projectToDelete = projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException(id));
+
+        projectRepository.delete(projectToDelete);
+    }
 }
