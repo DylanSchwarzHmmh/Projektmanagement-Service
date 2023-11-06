@@ -2,6 +2,7 @@ package de.szut.lf8_project.project;
 
 import de.szut.lf8_project.project.dto.CreateProjectDto;
 
+import de.szut.lf8_project.project.dto.UpdateProjectDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,6 +61,23 @@ public class ProjectController {
     @ApiResponse(responseCode = "401", description = "Not authorized")
     public ResponseEntity<ProjectEntity> getProjectById(@PathVariable Long Id) {
         ProjectEntity project = projectService.getProjectById(Id);
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    @PutMapping("/{Id}")
+    @Operation(summary = "Update a project by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project updated successfully",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProjectEntity.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid JSON posted",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "401", description = "Not authorized",
+                    content = @Content)
+    })
+    public ResponseEntity<ProjectEntity> updateProjectById(@PathVariable Long Id, @RequestBody @Valid UpdateProjectDto updateProjectDto) {
+        ProjectEntity project = projectService.updateProject(Id, updateProjectDto);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 }

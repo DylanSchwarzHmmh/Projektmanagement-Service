@@ -45,3 +45,26 @@ GET localhost:8089/v1/projects/
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
+###
+# @name GetOneProjectTest
+GET localhost:8089/v1/projects/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+
+### /projects/{projectId}
+# @name UpdateProjectTest
+
+PUT localhost:8089/v1/projects/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "description": "Neue Projektbeschreibung33",
+  "cid": 6,
+  "customerEmployeeName": "Neuer Mitarbeitername",
+  "comment": "Aktualisierter Kommentar",
+  "startDate": "2022-12-09T18:19:26.492745400",
+  "estimatedEndDate": "2022-12-09T18:19:26.492745400",
+  "endDate": "2022-12-09T18:19:26.492745400"
+}

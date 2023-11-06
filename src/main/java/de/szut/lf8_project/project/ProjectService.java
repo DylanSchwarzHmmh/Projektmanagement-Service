@@ -1,6 +1,7 @@
 package de.szut.lf8_project.project;
 
 import de.szut.lf8_project.exceptionHandling.ProjectNotFoundException;
+import de.szut.lf8_project.project.dto.UpdateProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import de.szut.lf8_project.project.dto.CreateProjectDto;
@@ -28,4 +29,10 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
+    public ProjectEntity updateProject(Long id, UpdateProjectDto updateProjectDto) {
+        ProjectEntity oldProject=projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException(id));
+        ProjectEntity newProject = projectMapper.updateProjectDtoToProjectEntity(updateProjectDto,oldProject);
+        return projectRepository.save(newProject);
+    }
 }
