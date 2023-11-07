@@ -14,8 +14,13 @@ Content-Type: application/json
 
 {
   "description": "Hallo ich bin ein Projekt!",
-  "eid": 5,
   "cid": 4,
+  "employees": [
+    1
+  ],
+  "qualifications": [
+    1, 2
+  ],
   "customerEmployeeName": "Kevin James",
   "comment": "Ich bin eine Kommentarziel lelele",
   "startDate": "2022-12-09T18:19:26.492745400",
@@ -71,8 +76,32 @@ Content-Type: application/json
   "endDate": "2022-12-09T18:19:26.492745400"
 }
 
+### /projects/{projectId}/addEmployee/{employeeId}
+# @name AddEmployee
+
+POST localhost:8089/v1/projects/1/addEmployee/5
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
 ### /projects/{projectId}
 # @name DeleteProjectTest
 DELETE localhost:8089/v1/projects/3
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
+
+### https://employee.szut.dev/qualifications
+# @name GetAllQualifications
+GET https://employee.szut.dev/qualifications
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+
+### https://employee.szut.dev/qualifications
+# @name AddNewQualification
+POST https://employee.szut.dev/qualifications
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "skill": "Springboot"
+}
