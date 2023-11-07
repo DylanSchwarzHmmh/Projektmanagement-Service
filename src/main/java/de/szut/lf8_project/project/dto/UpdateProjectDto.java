@@ -6,30 +6,21 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class UpdateProjectDto {
 
-
     private String description;
-
-
     private Long cid;
-
-
     private String customerEmployeeName;
-
-
     private String comment;
-
-
+    private Set<Long> employees;
+    private Set<Long> qualifications;
     private LocalDateTime startDate;
-
     private LocalDateTime estimatedEndDate;
-
-
     private LocalDateTime endDate;
 
     public Optional<String> getDescription() {
@@ -47,6 +38,11 @@ public class UpdateProjectDto {
     public Optional<String> getComment() {
         return Optional.ofNullable(comment);
     }
+
+    public Optional<Set<Long>> getQualifications() {
+        return Optional.ofNullable(qualifications);
+    }
+    public Optional<Set<Long>> getEmployees() { return Optional.ofNullable(employees); }
 
     public Optional<LocalDateTime> getStartDate() {
         return Optional.ofNullable(startDate);

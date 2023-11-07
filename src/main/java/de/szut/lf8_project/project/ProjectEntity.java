@@ -7,6 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,9 +23,6 @@ public class ProjectEntity {
     @Column(nullable = false)
     @Size(max=500)
     private String description;
-
-    @Column(nullable = false)
-    private Long eid;
 
     @Column(nullable = false)
     private Long cid;
@@ -41,4 +41,14 @@ public class ProjectEntity {
 
     @Column(nullable = false)
     private LocalDateTime endDate;
+
+    @ElementCollection
+    @CollectionTable(name = "project_employees", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "employee_id")
+    private Set<Long> employees;
+
+    @ElementCollection
+    @CollectionTable(name = "project_qualifications", joinColumns = @JoinColumn(name = "qualification_id"))
+    @Column(name = "qualification")
+    private Set<Long> qualifications;
 }
