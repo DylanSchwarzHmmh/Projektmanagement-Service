@@ -114,6 +114,20 @@ public class ProjectService {
                 .orElseThrow(() -> new ProjectNotFoundException(id));
         projectRepository.delete(projectToDelete);
     }
+    
+    public void deleteEmployee(Long projectId, Long employeeId) {
+        ProjectEntity myProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        Set<Long> employees = myProject.getEmployees();
+        if(employees.contains(employeeId)) {
+            employees.remove(employeeId);
+            myProject.setEmployees(employees);
+        } else {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+        projectRepository.save(myProject);
+    }
 
     public boolean employeeIsBusy(ProjectEntity newProject, Long employeeId) {
         Set<ProjectEntity> employeeProjects = getAllProjectsByEmployeeId(employeeId);
