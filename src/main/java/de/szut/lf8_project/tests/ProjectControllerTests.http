@@ -24,7 +24,7 @@ Content-Type: application/json
   "customerEmployeeName": "Kevin James",
   "comment": "Ich bin eine Kommentarziel lelele",
   "startDate": "2022-12-09T18:19:26.492745400",
-  "estimatedEndDate": "2022-12-09T18:19:26.492745400",
+  "estimatedEndDate": "2022-12-10T18:19:26.492745400",
   "endDate": "2022-12-09T18:19:26.492745400"
 }
 
@@ -42,7 +42,7 @@ Content-Type: application/json
   "customerEmployeeName": null,
   "comment": "Ich bin eine Kommentarziel lelele",
   "startDate": "2022-12-09T18:19:26.492745400",
-  "estimatedEndDate": "2022-12-09T18:19:26.492745400",
+  "estimatedEndDate": "2022-12-10T19:19:26.492745400",
   "endDate": "2022-12-09T18:19:26.492745400"
 }
 
@@ -105,3 +105,21 @@ Content-Type: application/json
 {
   "skill": "Springboot"
 }
+
+### https://employee.szut.dev/employees
+# @name GetAllEmployees
+GET https://employee.szut.dev/employees
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### /projects/employees/{employeeId}
+# @name Get all projects for employee
+GET localhost:8089/v1/projects/employees/2
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### /projects/{projectId}/{employeeId}
+# @name DeleteProjectTest
+DELETE localhost:8089/v1/projects/1/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
