@@ -11,10 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -56,6 +55,19 @@ public class ProjectController {
         return new ResponseEntity<>(updatedProject, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get a list of projects for specified employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of projects for employee",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProjectEntity.class))}),
+            @ApiResponse(responseCode = "401", description = "Not authorized",
+            content = @Content)})
+    @GetMapping("/employees/{employeeId}")
+    public ResponseEntity<Set<ProjectEntity>> getProjectsByEmployee(@PathVariable Long employeeId) {
+        Set<ProjectEntity> projects = projectService.getAllProjectsByEmployeeId(employeeId);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
     @Operation(summary = "Get a list of projects")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of projects",
@@ -64,8 +76,8 @@ public class ProjectController {
             @ApiResponse(responseCode = "401", description = "Not authorized",
                     content = @Content)})
     @GetMapping("/")
-    public ResponseEntity<List<ProjectEntity>> getAllProjects() {
-        List<ProjectEntity> projects = projectService.getAllProjects();
+    public ResponseEntity<Set<ProjectEntity>> getAllProjects() {
+        Set<ProjectEntity> projects = projectService.getAllProjects();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
