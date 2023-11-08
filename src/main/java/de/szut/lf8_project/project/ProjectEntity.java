@@ -39,7 +39,7 @@ public class ProjectEntity {
     @Column(nullable = false)
     private LocalDateTime estimatedEndDate;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime endDate;
 
     @ElementCollection

@@ -1,7 +1,9 @@
 package de.szut.lf8_project.employee;
 
 import de.szut.lf8_project.exceptionHandling.EmployeeNotFoundException;
+import de.szut.lf8_project.exceptionHandling.EmployeesNotFoundException;
 import de.szut.lf8_project.security.AccessTokenDto;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class EmployeeManagementMicroService {
@@ -54,5 +57,50 @@ public class EmployeeManagementMicroService {
                                 .flatMap(errorBody -> Mono.error(new EmployeeNotFoundException(id)))
                 )
                 .bodyToMono(GetEmployeeDto.class).block();
+    }
+
+    public Set<GetEmployeeDto> getAllEmployees() {
+        String employeesUrl = "https://employee.szut.dev/employees";
+        return webClientBuilder.build()
+                .get()
+                .uri(employeesUrl)
+                .header("Authorization", "Bearer " + authorizationToken)
+                .retrieve()
+                .onStatus(
+                        status -> status.equals(HttpStatus.NOT_FOUND),
+                        response -> response.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new EmployeesNotFoundException()))
+                )
+                .bodyToMono(new ParameterizedTypeReference<Set<GetEmployeeDto>>() {}).block();
+    }
+
+    public Set<GetQualificationDto> getAllQualifications() {
+        String employeesUrl = "https://employee.szut.dev/qualifications";
+        return webClientBuilder.build()
+                .get()
+                .uri(employeesUrl)
+                .header("Authorization", "Bearer " + authorizationToken)
+                .retrieve()
+                .onStatus(
+                        status -> status.equals(HttpStatus.NOT_FOUND),
+                        response -> response.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new EmployeesNotFoundException()))
+                )
+                .bodyToMono(new ParameterizedTypeReference<Set<GetQualificationDto>>() {}).block();
+    }
+
+    public GetQualificationsDto getQualificationsForEmployee(Long employeeId) {
+        String qualificationsByEmployeeIdUrl = "https://employee.szut.dev/employees/" + employeeId + "/qualifications";
+        return webClientBuilder.build()
+                .get()
+                .uri(qualificationsByEmployeeIdUrl)
+                .header("Authorization", "Bearer " + authorizationToken)
+                .retrieve()
+                .onStatus(
+                        status -> status.equals(HttpStatus.NOT_FOUND),
+                        response -> response.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new EmployeesNotFoundException()))
+                )
+                .bodyToMono(GetQualificationsDto.class).block();
     }
 }
