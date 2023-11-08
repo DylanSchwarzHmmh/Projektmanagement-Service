@@ -10,10 +10,11 @@ public class ProjectMapper {
     public ProjectEntity createProjectDtoToProjectEntity(@NotNull CreateProjectDto createProjectDto) {
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setCid(createProjectDto.getCid());
-        projectEntity.setEid(createProjectDto.getEid());
+        projectEntity.setEmployees(createProjectDto.getEmployees());
         projectEntity.setDescription(createProjectDto.getDescription());
         projectEntity.setCustomerEmployeeName(createProjectDto.getCustomerEmployeeName());
         projectEntity.setComment(createProjectDto.getComment());
+        projectEntity.setQualifications(createProjectDto.getQualifications());
         projectEntity.setStartDate(createProjectDto.getStartDate());
         projectEntity.setEstimatedEndDate(createProjectDto.getEstimatedEndDate());
         projectEntity.setEndDate(createProjectDto.getEndDate());
@@ -26,6 +27,8 @@ public class ProjectMapper {
         updateProjectDto.getCustomerEmployeeName().ifPresent(oldProject::setCustomerEmployeeName);
         updateProjectDto.getComment().ifPresent(oldProject::setComment);
         updateProjectDto.getStartDate().ifPresent(oldProject::setStartDate);
+        updateProjectDto.getQualifications().ifPresent(oldProject::setQualifications);
+        updateProjectDto.getEmployees().ifPresent(oldProject::setEmployees);
         updateProjectDto.getEstimatedEndDate().ifPresent(oldProject::setEstimatedEndDate);
         updateProjectDto.getEndDate().ifPresent(oldProject::setEndDate);
         return oldProject;

@@ -41,6 +41,20 @@ public class ProjectController {
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Add an employee to a project")
+    @ApiResponse(responseCode = "201", description = "Employee added to the project",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProjectEntity.class))})
+    @ApiResponse(responseCode = "400", description = "Invalid JSON posted", content = @Content)
+    @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content)
+    @PostMapping("/{projectId}/addEmployee/{employeeId}")
+    public ResponseEntity<ProjectEntity> addEmployeeToProject(
+            @PathVariable Long projectId,
+            @PathVariable Long employeeId
+    ) {
+        ProjectEntity updatedProject = projectService.addEmployee(projectId, employeeId);
+        return new ResponseEntity<>(updatedProject, HttpStatus.CREATED);
+    }
+
     @Operation(summary = "Get a list of projects")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of projects",
@@ -53,7 +67,6 @@ public class ProjectController {
         List<ProjectEntity> projects = projectService.getAllProjects();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
-
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a project by ID")
