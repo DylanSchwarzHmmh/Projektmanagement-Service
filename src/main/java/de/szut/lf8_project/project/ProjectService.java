@@ -13,7 +13,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @RequiredArgsConstructor
 @Service
 public class ProjectService {
@@ -22,46 +21,8 @@ public class ProjectService {
     private final EmployeeManagementMicroService microService;
 
     public ProjectEntity createProject(CreateProjectDto createProjectDto) {
-        Set<GetEmployeeDto> employeeDtos = microService.getAllEmployees();
-        Set<GetQualificationDto> allQualifications = microService.getAllQualifications();
-        Set<Long> projectQualifications = createProjectDto.getQualifications();
         ProjectEntity newProject = projectMapper.createProjectDtoToProjectEntity(createProjectDto);
-
-        // Check if realEndDate is after the start date
-        LocalDateTime startDate = newProject.getStartDate();
-        LocalDateTime estimatedEndDate = newProject.getEstimatedEndDate();
-
-        if(!estimatedEndDate.isAfter(startDate)) {
-            throw new DateTimeException("The date you entered is not valid!");
-        }
-
-        for(Long newEmployeeId : newProject.getEmployees()) {
-            if(employeeDtos.stream().noneMatch(employeeDto -> employeeDto.getId().equals(newEmployeeId))) {
-                throw new EmployeeNotFoundException(newEmployeeId);
-            }
-
-            // Check if employee is Busy
-            if(employeeIsBusy(newProject, newEmployeeId)) {
-                throw new EmployeeBusyException(newEmployeeId);
-            }
-
-            // Check if projectQualifications exist
-            for (Long qualificationId : projectQualifications) {
-                if (allQualifications.stream().noneMatch(qualificationDto -> {
-                    assert qualificationDto.getId() != null;
-                    return qualificationDto.getId().equals(qualificationId);
-                })) {
-                    throw new QualificationNotFoundException(newEmployeeId);
-                }
-            }
-
-            // Check if employeeQualifications are correct
-            GetQualificationsDto employeeQualifications = microService.getQualificationsForEmployee(newEmployeeId);
-            if(newProject.getQualifications()
-                    .stream().noneMatch(newProjectQualification -> newProjectQualification.equals(employeeQualifications.getId()))) {
-                throw new EmployeeNotEnoughSkillException(newEmployeeId);
-            }
-        }
+        checkProjectBody(newProject);
         return projectRepository.save(newProject);
     }
 
@@ -103,9 +64,16 @@ public class ProjectService {
     }
 
     public ProjectEntity updateProject(Long id, UpdateProjectDto updateProjectDto) {
+
+        // Check if the project exists
         ProjectEntity oldProject=projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
-        ProjectEntity newProject = projectMapper.updateProjectDtoToProjectEntity(updateProjectDto,oldProject);
+        ProjectEntity newProject = projectMapper.updateProjectDtoToProjectEntity(updateProjectDto, oldProject);
+
+        // Check the new project body for valid values
+        checkProjectBody(newProject);
+
+        // Return the new repository
         return projectRepository.save(newProject);
     }
 
@@ -133,15 +101,62 @@ public class ProjectService {
         Set<ProjectEntity> employeeProjects = getAllProjectsByEmployeeId(employeeId);
         if(employeeProjects.isEmpty()) return false;
         for(ProjectEntity project : employeeProjects) {
-            LocalDateTime start = project.getStartDate();
-            LocalDateTime estimatedEnd = project.getEstimatedEndDate();
-            LocalDateTime newStart = newProject.getStartDate();
-            LocalDateTime newEstimatedEnd = newProject.getEstimatedEndDate();
-            if (!(newEstimatedEnd.isBefore(start) || newStart.isAfter(estimatedEnd))) {
-                return true;
+            if(!project.getId().equals(newProject.getId())) {
+                LocalDateTime start = project.getStartDate();
+                LocalDateTime estimatedEnd = project.getEstimatedEndDate();
+                LocalDateTime newStart = newProject.getStartDate();
+                LocalDateTime newEstimatedEnd = newProject.getEstimatedEndDate();
+                if (!(newEstimatedEnd.isBefore(start) || newStart.isAfter(estimatedEnd))) {
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    // Checks if a Update or Create body is valid or not
+    public void checkProjectBody(ProjectEntity newProject) {
+        Set<GetEmployeeDto> employeeDtos = microService.getAllEmployees();
+        Set<GetQualificationDto> allQualifications = microService.getAllQualifications();
+        Set<Long> projectQualifications = newProject.getQualifications();
+
+        // Check if realEndDate is after the start date
+        LocalDateTime startDate = newProject.getStartDate();
+        LocalDateTime estimatedEndDate = newProject.getEstimatedEndDate();
+        if(!estimatedEndDate.isAfter(startDate)) {
+            throw new DateTimeException("The date you entered is not valid!");
+        }
+
+        // Loop through all EmployeeIds of the newProject
+        for(Long newEmployeeId : newProject.getEmployees()) {
+
+            // Check if the employee exists
+            if(employeeDtos.stream().noneMatch(employeeDto -> employeeDto.getId().equals(newEmployeeId))) {
+                throw new EmployeeNotFoundException(newEmployeeId);
+            }
+
+            // Check if employee is Busy
+            if(employeeIsBusy(newProject, newEmployeeId)) {
+                throw new EmployeeBusyException(newEmployeeId);
+            }
+
+            // Check if projectQualifications exist
+            for (Long qualificationId : projectQualifications) {
+                if (allQualifications.stream().noneMatch(qualificationDto -> {
+                    assert qualificationDto.getId() != null;
+                    return qualificationDto.getId().equals(qualificationId);
+                })) {
+                    throw new QualificationNotFoundException(newEmployeeId);
+                }
+            }
+
+            // Check if employeeQualifications are correct
+            GetQualificationsDto employeeQualifications = microService.getQualificationsForEmployee(newEmployeeId);
+            if(newProject.getQualifications()
+                    .stream().noneMatch(newProjectQualification -> newProjectQualification.equals(employeeQualifications.getId()))) {
+                throw new EmployeeNotEnoughSkillException(newEmployeeId);
+            }
+        }
     }
 
     public Set<ProjectEntity> getAllProjectsByEmployeeId(Long employeeId) {
