@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -104,7 +105,24 @@ public class ProjectController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
-        return ResponseHandler.generateResponse("Project deleted by id:"+id, HttpStatus.NO_CONTENT,null);
+        Map<String, Object> response = ResponseHandler
+                .generateResponse("Project deleted by id:"+id, HttpStatus.OK, null);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Removes an employee from a project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Employee removed successfully"),
+            @ApiResponse(responseCode = "404", description = "Project or employee not found"),
+            @ApiResponse(responseCode = "401", description = "Not authorized")
+    })
+    @DeleteMapping("/{projectId}/{employeeId}")
+    public ResponseEntity<Object> deleteEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
+        projectService.deleteEmployee(projectId, employeeId);
+        Map<String, Object> response = ResponseHandler
+                .generateResponse("Removed employee with id: " + employeeId + " " +
+                        "from project with id: " + projectId, HttpStatus.OK, null);
+        return ResponseEntity.ok(response);
     }
 }
 

@@ -16,7 +16,7 @@ Content-Type: application/json
   "description": "Hallo ich bin ein Projekt!",
   "cid": 4,
   "employees": [
-    3
+    1
   ],
   "qualifications": [
     1, 2
@@ -85,7 +85,7 @@ Content-Type: application/json
 
 ### /projects/{projectId}
 # @name DeleteProjectTest
-DELETE localhost:8089/v1/projects/3
+DELETE localhost:8089/v1/projects/1
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
