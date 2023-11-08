@@ -13,7 +13,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @RequiredArgsConstructor
 @Service
 public class ProjectService {
@@ -96,7 +95,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public List<ProjectEntity> getAllProjects() { return projectRepository.findAll(); }
+    public Set<ProjectEntity> getAllProjects() { return new HashSet<ProjectEntity>(projectRepository.findAll()); }
 
     public ProjectEntity getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));

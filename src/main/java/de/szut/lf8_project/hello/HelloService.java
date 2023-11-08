@@ -1,11 +1,8 @@
 package de.szut.lf8_project.hello;
 
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class HelloService {

@@ -3,7 +3,6 @@ package de.szut.lf8_project.project;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;

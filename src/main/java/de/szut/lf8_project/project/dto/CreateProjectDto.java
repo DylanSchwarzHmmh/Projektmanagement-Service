@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Set;
