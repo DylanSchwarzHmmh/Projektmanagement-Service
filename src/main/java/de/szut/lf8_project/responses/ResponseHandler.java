@@ -2,8 +2,6 @@
 package de.szut.lf8_project.responses;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import java.util.HashMap;
 import java.util.Map;
 
