@@ -47,7 +47,10 @@ public class ProjectService {
 
             // Check if projectQualifications exist
             for (Long qualificationId : projectQualifications) {
-                if (allQualifications.stream().noneMatch(qualificationDto -> qualificationDto.getId().equals(qualificationId))) {
+                if (allQualifications.stream().noneMatch(qualificationDto -> {
+                    assert qualificationDto.getId() != null;
+                    return qualificationDto.getId().equals(qualificationId);
+                })) {
                     throw new QualificationNotFoundException(newEmployeeId);
                 }
             }
