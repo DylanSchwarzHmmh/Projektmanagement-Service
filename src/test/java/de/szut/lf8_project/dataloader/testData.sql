@@ -1,0 +1,12 @@
+ProjectEntity project = new ProjectEntity();
+        project.setId(1L);
+        project.setDescription("Test Project");
+        project.setCid(123L);
+        project.setCustomerEmployeeName("John Doe");
+        project.setComment("Test Comment");
+        project.setStartDate(LocalDateTime.now());
+        project.setEstimatedEndDate(LocalDateTime.now().plusDays(10));
+        project.setEndDate(null);
+        Set<Long> employees = new HashSet<>();
+        employees.add(1L);
+        project.setEmployees(employees);
