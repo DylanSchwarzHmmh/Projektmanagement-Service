@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 public class CreateProjectDto {
     @Valid
     private String description;
-
-    @NonNull
-    private Long eid;
 
     @NonNull
     private Long cid;
@@ -28,11 +25,16 @@ public class CreateProjectDto {
     private String comment;
 
     @NonNull
+    private Set<Long> employees;
+
+    @NonNull
+    private Set<Long> qualifications;
+
+    @NonNull
     private LocalDateTime startDate;
 
     @NonNull
     private LocalDateTime estimatedEndDate;
-
-    @NonNull
+    
     private LocalDateTime endDate;
 }
