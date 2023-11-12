@@ -6,6 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class RemoveEmployeeFromProjectIT extends AbstractIntegrationTest {
 
@@ -19,8 +21,11 @@ public class RemoveEmployeeFromProjectIT extends AbstractIntegrationTest {
 
         // Verify that the project has been deleted
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/v1/projects/1/1")
+                        .get("/v1/projects/1")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.employees").isArray())
+                .andExpect(jsonPath("$.employees", hasSize(0)))
+                .andExpect(jsonPath("$.employees", not(hasItem(1))));
     }
 }

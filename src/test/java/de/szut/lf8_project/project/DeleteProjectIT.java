@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-
 public class DeleteProjectIT extends AbstractIntegrationTest {
 
     @Test
@@ -25,13 +24,3 @@ public class DeleteProjectIT extends AbstractIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
-
-
-// Bei "deleteProject" im ProjectController, beim normalen  Return:
-// return ResponseEntity.ok(response);
-// funktioniert "DeleteProjectIT" nicht
-//
-// Bei diesen Varianten würde es klappen:
-// return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
-// return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
-//

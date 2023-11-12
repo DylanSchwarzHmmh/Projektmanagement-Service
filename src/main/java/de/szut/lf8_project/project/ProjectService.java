@@ -57,7 +57,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public Set<ProjectEntity> getAllProjects() { return new HashSet<ProjectEntity>(projectRepository.findAll()); }
+    public Set<ProjectEntity> getAllProjects() { return new HashSet<>(projectRepository.findAll()); }
 
     public ProjectEntity getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
@@ -160,13 +160,15 @@ public class ProjectService {
     }
 
     public Set<ProjectEntity> getAllProjectsByEmployeeId(Long employeeId) {
-        Set<ProjectEntity> projects = new HashSet<>();
+        List<ProjectEntity> projects = new ArrayList<>();
         List<ProjectEntity> allProjects = projectRepository.findAll();
         for(ProjectEntity project : allProjects) {
             if (project.getEmployees().contains(employeeId)) {
                 projects.add(project);
             }
         }
-        return projects;
+        // Sorting projects
+        projects.sort(Comparator.comparing(ProjectEntity::getId));
+        return new LinkedHashSet<>(projects);
     }
 }

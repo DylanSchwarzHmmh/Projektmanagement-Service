@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,15 +17,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * A fast slice test will only start jpa context.
- * <p>
- * To use other context beans use org.springframework.context.annotation.@Import annotation.
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("it")
 @ContextConfiguration(initializers = PostgresContextInitializer.class)
+@DirtiesContext
 public class AbstractIntegrationTest {
 
     @Autowired
@@ -46,27 +43,25 @@ public class AbstractIntegrationTest {
         // Delete all projects
         projectRepository.deleteAll();
 
-        // Create and save 3 new projects
-        for(int i = 0; i < 3;i++) {
-            // Create a sample project for testing
+        // Create a sample project for testing
+        for(int i = 0; i != 2 ; i++) {
             ProjectEntity project = new ProjectEntity();
-            project.setId((long)(i+1));
+            project.setId((long)i+1);
             project.setDescription("Test Project");
             project.setCid(123L);
             project.setCustomerEmployeeName("John Doe");
             project.setComment("Test Comment");
-            project.setStartDate(LocalDateTime.now());
-            project.setEstimatedEndDate(LocalDateTime.now().plusDays(10));
+            project.setStartDate(LocalDateTime.now().plusDays((i+1)*10));
+            project.setEstimatedEndDate(LocalDateTime.now().plusDays((i+1)*20));
             project.setEndDate(null);
             Set<Long> employees = new HashSet<>();
-            employees.add((long)(i+1));
+            employees.add(1L);
             project.setEmployees(employees);
             Set<Long> qualifications = new HashSet<>();
             qualifications.add(1L);
             qualifications.add(2L);
             project.setQualifications(qualifications);
             projectRepository.save(project);
-
         }
     }
 }

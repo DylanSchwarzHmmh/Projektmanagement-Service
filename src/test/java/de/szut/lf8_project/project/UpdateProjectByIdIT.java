@@ -6,14 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-public class UpdateByIdIT extends AbstractIntegrationTest {
+public class UpdateProjectByIdIT extends AbstractIntegrationTest {
 
     @Test
     @WithMockUser
@@ -36,8 +32,8 @@ public class UpdateByIdIT extends AbstractIntegrationTest {
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.description").value("Neue Projektbeschreibung!"))
-                .andExpect(jsonPath("$.cid").value(6L))
                 .andExpect(jsonPath("$.customerEmployeeName").value("John Doe"))
-                .andExpect(jsonPath("$.comment").value("Aktualisierter Kommentar"));
+                .andExpect(jsonPath("$.comment").value("Aktualisierter Kommentar"))
+                .andExpect(jsonPath("$.cid").value(6L));
     }
 }

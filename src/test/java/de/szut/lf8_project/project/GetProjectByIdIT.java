@@ -8,11 +8,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class GetByIdIT extends AbstractIntegrationTest {
+public class GetProjectByIdIT extends AbstractIntegrationTest {
 
     @Test
     @WithMockUser(roles = "user")
-    void findById() throws Exception {
+    void getProjectById() throws Exception {
         ResultActions result = mockMvc.perform(get("/v1/projects/1")
                 .contentType(MediaType.APPLICATION_JSON));
 
