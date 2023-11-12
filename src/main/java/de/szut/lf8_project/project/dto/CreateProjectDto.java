@@ -35,7 +35,6 @@ public class CreateProjectDto {
 
     @NonNull
     private LocalDateTime estimatedEndDate;
-
-    @NonNull
+    
     private LocalDateTime endDate;
 }

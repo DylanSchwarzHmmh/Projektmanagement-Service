@@ -16,7 +16,7 @@ Content-Type: application/json
   "description": "Hallo ich bin ein Projekt!",
   "cid": 4,
   "employees": [
-    1, 2
+    1
   ],
   "qualifications": [
     1, 2
@@ -78,7 +78,7 @@ Content-Type: application/json
 ### /projects/{projectId}/addEmployee/{employeeId}
 # @name AddEmployee
 
-POST localhost:8089/v1/projects/1/addEmployee/5
+POST localhost:8089/v1/projects/1/addEmployee/2
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 

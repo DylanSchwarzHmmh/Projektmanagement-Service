@@ -119,7 +119,7 @@ public class ProjectController {
         projectService.deleteProject(id);
         Map<String, Object> response = ResponseHandler
                 .generateResponse("Project deleted by id:"+id, HttpStatus.OK, null);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Removes an employee from a project")
@@ -134,7 +134,7 @@ public class ProjectController {
         Map<String, Object> response = ResponseHandler
                 .generateResponse("Removed employee with id: " + employeeId + " " +
                         "from project with id: " + projectId, HttpStatus.OK, null);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 }
 
